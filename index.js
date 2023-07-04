@@ -9,6 +9,13 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyparser.json());
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  });
+
 var conString = config.urlConnection;
 var client = new Client(conString);
 client.connect(function (err) {
@@ -35,7 +42,7 @@ app.get("/freelancers", (req, res) => {
                 return console.error("Erro ao executar a query de SELECT", err);
             }
             res.send(result.rows);
-            console.log("Chamou get Freelancers");
+            //console.log("Chamou get Freelancers");
         });
     } catch (error) {
         console.log(error);

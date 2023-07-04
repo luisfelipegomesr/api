@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/freelancers", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Defina o domínio do seu aplicativo frontend
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         client.query("SELECT * FROM Freelancers", function (err, result) {
@@ -51,7 +51,7 @@ app.get("/freelancers", (req, res) => {
 });
 
 app.get("/freelancers/:id", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Defina o domínio do seu aplicativo frontend
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         console.log("Chamou /:id " + req.params.id);
@@ -63,7 +63,6 @@ app.get("/freelancers/:id", (req, res) => {
                     return console.error("Erro ao executar a qry de SELECT id", err);
                 }
                 res.send(result.rows);
-                //console.log(result);
             }
         );
     } catch (error) {

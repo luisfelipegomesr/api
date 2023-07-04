@@ -9,12 +9,6 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyparser.json());
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
 var conString = config.urlConnection;
 var client = new Client(conString);
 client.connect(function (err) {
@@ -35,15 +29,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/freelancers", (req, res) => {
-    // res.header("Access-Control-Allow-Origin", "*");
-    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         client.query("SELECT * FROM Freelancers", function (err, result) {
             if (err) {
                 return console.error("Erro ao executar a query de SELECT", err);
             }
             res.send(result.rows);
-            //console.log("Chamou get Freelancers");
         });
     } catch (error) {
         console.log(error);
@@ -51,8 +42,6 @@ app.get("/freelancers", (req, res) => {
 });
 
 app.get("/freelancers/:id", (req, res) => {
-    // res.header("Access-Control-Allow-Origin", "*");
-    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         console.log("Chamou /:id " + req.params.id);
         client.query(
@@ -98,10 +87,10 @@ app.delete("/freelancers/:id", (req, res) => {
 app.post("/freelancers", (req, res) => {
     try {
         console.log("Chamou post", req.body);
-        const { nome, email } = req.body;
+        const { nome, email, senha, profissao, cidade, preco, descricao} = req.body;
         client.query(
-            "INSERT INTO Freelancers (nome, email) VALUES ($1, $2) RETURNING * ",
-            [nome, email],
+            "INSERT INTO Freelancers (nome, email, senha, profissao, cidade, preco, descricao) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING * ",
+            [nome, email, senha, profissao, cidade, preco, descricao],
             function (err, result) {
                 if (err) {
                     return console.error("Erro ao executar a qry de INSERT", err);
@@ -121,10 +110,10 @@ app.put("/freelancers/:id", (req, res) => {
     try {
         console.log("Chamou update", req.body);
         const id = req.params.id;
-        const { nome, email } = req.body;
+        const { nome, email, senha, profissao, cidade, preco, descricao} = req.body;
         client.query(
-            "UPDATE Freelancers SET nome=$1, email=$2 WHERE id =$3 ",
-            [nome, email, id],
+            "UPDATE Freelancers SET nome=$1, email=$2, senha$3, profissao$4, cidade$5, preco$6, descricao$7 WHERE id =$8 ",
+            [nome, email, id, senha, profissao, cidade, preco, descricao],
             function (err, result) {
                 if (err) {
                     return console.error("Erro ao executar a qry de UPDATE", err);

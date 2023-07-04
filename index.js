@@ -29,6 +29,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/freelancers", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Defina o domínio do seu aplicativo frontend
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         client.query("SELECT * FROM Freelancers", function (err, result) {
             if (err) {

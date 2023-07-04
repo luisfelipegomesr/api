@@ -8,11 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyparser.json());
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // Defina o domínio do seu aplicativo frontend
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
 
 var conString = config.urlConnection;
 var client = new Client(conString);
@@ -48,6 +43,8 @@ app.get("/freelancers", (req, res) => {
 });
 
 app.get("/freelancers/:id", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Defina o domínio do seu aplicativo frontend
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         console.log("Chamou /:id " + req.params.id);
         client.query(
@@ -136,7 +133,7 @@ app.put("/freelancers/:id", (req, res) => {
     }
 });
 
-app.listen(config.port, () =>
+app.listen(3000, () =>
     console.log("Servidor funcionando na porta " + config.port)
 );
 

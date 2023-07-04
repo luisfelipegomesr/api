@@ -9,11 +9,11 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyparser.json());
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 var conString = config.urlConnection;
 var client = new Client(conString);
@@ -35,8 +35,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/freelancers", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         client.query("SELECT * FROM Freelancers", function (err, result) {
             if (err) {
@@ -51,8 +51,8 @@ app.get("/freelancers", (req, res) => {
 });
 
 app.get("/freelancers/:id", (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    // res.header("Access-Control-Allow-Origin", "*");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     try {
         console.log("Chamou /:id " + req.params.id);
         client.query(
@@ -140,7 +140,7 @@ app.put("/freelancers/:id", (req, res) => {
     }
 });
 
-app.listen(3000, () =>
+app.listen(config.port, () =>
     console.log("Servidor funcionando na porta " + config.port)
 );
 

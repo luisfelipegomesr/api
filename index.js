@@ -25,28 +25,28 @@ client.connect(function (err) {
 
 app.get("/", (req, res) => {
     console.log("response ok.");
-    res.send("OK - Servidor disponível na unifei.");
+    res.send("OK - Servidor da Ujobs disponível.");
 });
 
-app.get("/usuarios", (req, res) => {
+app.get("/freelancers", (req, res) => {
     try {
-        client.query("SELECT * FROM Usuarios", function (err, result) {
+        client.query("SELECT * FROM Freelancers", function (err, result) {
             if (err) {
                 return console.error("Erro ao executar a query de SELECT", err);
             }
             res.send(result.rows);
-            console.log("Chamou get usuarios");
+            console.log("Chamou get Freelancers");
         });
     } catch (error) {
         console.log(error);
     }
 });
 
-app.get("/usuarios/:id", (req, res) => {
+app.get("/freelancers/:id", (req, res) => {
     try {
         console.log("Chamou /:id " + req.params.id);
         client.query(
-            "SELECT * FROM Usuarios WHERE id = $1",
+            "SELECT * FROM Freelancers WHERE id = $1",
             [req.params.id],
             function (err, result) {
                 if (err) {
@@ -61,12 +61,12 @@ app.get("/usuarios/:id", (req, res) => {
     }
 });
 
-app.delete("/usuarios/:id", (req, res) => {
+app.delete("/freelancers/:id", (req, res) => {
     try {
         console.log("Chamou delete /:id " + req.params.id);
         const id = req.params.id;
         client.query(
-            "DELETE FROM Usuarios WHERE id = $1",
+            "DELETE FROM Freelancers WHERE id = $1",
             [id],
             function (err, result) {
                 if (err) {
@@ -86,12 +86,12 @@ app.delete("/usuarios/:id", (req, res) => {
     }
 });
 
-app.post("/usuarios", (req, res) => {
+app.post("/freelancers", (req, res) => {
     try {
         console.log("Chamou post", req.body);
         const { nome, email } = req.body;
         client.query(
-            "INSERT INTO Usuarios (nome, email) VALUES ($1, $2) RETURNING * ",
+            "INSERT INTO Freelancers (nome, email) VALUES ($1, $2) RETURNING * ",
             [nome, email],
             function (err, result) {
                 if (err) {
@@ -108,13 +108,13 @@ app.post("/usuarios", (req, res) => {
     }
 });
 
-app.put("/usuarios/:id", (req, res) => {
+app.put("/freelancers/:id", (req, res) => {
     try {
         console.log("Chamou update", req.body);
         const id = req.params.id;
         const { nome, email } = req.body;
         client.query(
-            "UPDATE Usuarios SET nome=$1, email=$2 WHERE id =$3 ",
+            "UPDATE Freelancers SET nome=$1, email=$2 WHERE id =$3 ",
             [nome, email, id],
             function (err, result) {
                 if (err) {
